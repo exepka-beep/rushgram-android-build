@@ -1,0 +1,62 @@
+name: Remote exec
+
+# Универсальный пульт: выполняет присланный скрипт на сервере по SSH.
+# Нужен потому, что с локальной машины исходящий 22-й порт заблокирован сетью,
+# а web-консоль хостинга ломает Shift. У раннера GitHub с этим всё в порядке.
+
+on:
+  workflow_dispatch:
+    inputs:
+      host:
+        description: "Сервер"
+        required: true
+        default: "2.26.81.165"
+      port:
+        description: "Порт SSH"
+        required: true
+        default: "22"
+      user:
+        description: "Пользователь"
+        required: true
+        default: "root"
+      script:
+        description: "Скрипт (bash), выполняется на сервере через stdin"
+        required: true
+        default: |
+          set -e
+          id
+          hostname
+          uname -a
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Install sshpass
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq sshpass
+
+      - name: Prepare script
+        env:
+          SCRIPT: ${{ github.event.inputs.script }}
+        run: |
+          printf '%s\n' "$SCRIPT" > /tmp/remote.sh
+          echo "----- script -----"
+          cat /tmp/remote.sh
+          echo "------------------"
+
+      - name: Execute over SSH
+        env:
+          SSH_PASS: ${{ secrets.ROOT_PASSWORD }}
+          HOST: ${{ github.event.inputs.host }}
+          PORT: ${{ github.event.inputs.port }}
+          USER_NAME: ${{ github.event.inputs.user }}
+        run: |
+          sshpass -p "$SSH_PASS" ssh \
+            -o StrictHostKeyChecking=no \
+            -o UserKnownHostsFile=/dev/null \
+            -o ConnectTimeout=25 \
+            -o ServerAliveInterval=15 \
+            -p "$PORT" "$USER_NAME@$HOST" 'bash -s' < /tmp/remote.sh

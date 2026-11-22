@@ -1,0 +1,112 @@
+{
+  "_comment": "Единый конфиг бренда RushGram. Все скрипты ребрендинга читают этот файл. Меняешь бренд здесь — меняется везде.",
+  "product": {
+    "name": "RushGram",
+    "short_name": "RushGram",
+    "username_prefix": "rushgram",
+    "app_scheme": "rushgram",
+    "premium_name": "RushGram Premium",
+    "stars_name": "RushGram Stars",
+    "org_name": "RushGram"
+  },
+  "replace": {
+    "_comment": "Правила замены строк в текстовых ресурсах клиентов. Порядок важен: длинные раньше коротких.",
+    "_android_overlay": "Android-конвейер накладывает overlay XTree Gram, поэтому в текстовых ресурсах уже стоит 'Xtreegram' вместо 'Telegram'. Поэтому правил две группы: сначала снимаем следы XTree Gram, потом добираем то, что XTree Gram сам не тронул. В Java применяется только группа XTree Gram — правило 'Telegram' там опасно (идентификаторы, t.me-ссылки, telegram.org).",
+    "rules": [
+      {
+        "from": "XTree Gram",
+        "to": "RushGram",
+        "skip_after": [],
+        "skip_before": []
+      },
+      {
+        "from": "Xtreegram",
+        "to": "RushGram",
+        "skip_after": [],
+        "skip_before": []
+      },
+      {
+        "from": "XTREEGRAM",
+        "to": "RUSHGRAM",
+        "skip_after": [],
+        "skip_before": []
+      },
+      {
+        "from": "Telegram",
+        "to": "RushGram",
+        "skip_after": [
+          ".org",
+          ".ORG"
+        ],
+        "skip_before": [
+          "/"
+        ]
+      },
+      {
+        "from": "TELEGRAM",
+        "to": "RUSHGRAM",
+        "skip_after": [
+          ".ORG"
+        ],
+        "skip_before": [
+          "/"
+        ]
+      }
+    ]
+  },
+  "android": {
+    "_keystore_password_comment": "Пароля здесь НЕТ намеренно. Этот файл уезжает в публичный репозиторий сборки, а пароль ключа подписи — секрет. Он приходит на шаге ребрендинга: --keystore-password, переменная окружения ANDROID_KEYSTORE_PASSWORD или секрет GitHub ANDROID_KEYSTORE_PASSWORD. Локально пароль лежит в ../artifacts/KEYSTORE_INFO.txt.",
+    "app_name": "RushGram",
+    "app_name_beta": "RushGram Beta",
+    "package": "com.rushgram.messenger",
+    "namespace": "org.telegram.messenger.regular",
+    "flavor": "afat",
+    "keystore_file": "release.keystore",
+    "keystore_alias": "rushgramkey",
+    "keystore_type": "PKCS12",
+    "keystore_keyalg": "RSA",
+    "keystore_keysize": 4096,
+    "keystore_validity_days": 10950,
+    "keystore_cert_sha256": "B6:0A:4C:6C:AC:8E:3C:51:16:1F:4E:04:6C:5A:6E:D1:62:9C:60:02:72:CA:0E:FD:E2:03:82:18:0C:6B:19:1D"
+  },
+  "ios": {
+    "app_name": "RushGram",
+    "bundle_id": "com.rushgram.messenger"
+  },
+  "desktop": {
+    "app_name": "RushGram Desktop",
+    "short_app_name": "RushGram",
+    "application_name": "RushGramDesktop",
+    "company_name": "RushGram",
+    "bundle_id": "com.rushgram.desktop",
+    "linux_app_id": "com.rushgram.desktop"
+  },
+  "pc_client": {
+    "_comment": "ПК-версия берётся готовым билдом OwpenGram Desktop с GitHub-релизов; клиент подключается к серверу через Add server (host:port).",
+    "distribution": "prebuilt",
+    "source_releases": "https://github.com/owpengram/owpengram-desktop-client/releases",
+    "exe_name": "RushGram.exe",
+    "server_name": "RushGram",
+    "server_description": "Self-hosted RushGram server.",
+    "server_icon_env": "TELESRV_OWPENGRAM_SERVER_ICON"
+  },
+  "server": {
+    "_comment": "RushGram: без домена, только IP. MTProto-адрес в клиенте — числовой IP, иначе нативный слой не подключится.",
+    "domain": "31.77.156.11",
+    "base_url": "http://31.77.156.11",
+    "web_base_url": "http://31.77.156.11",
+    "advertise_ip": "31.77.156.11",
+    "public_listen_host": "0.0.0.0",
+    "server_port": 2398,
+    "dc_id": 2,
+    "default_country_code": "RU",
+    "websocket_allowed_origins": "http://31.77.156.11",
+    "image_prefix": "ghcr.io/iamxvbaba/gramsrv",
+    "image_tag": "main"
+  },
+  "telegram_bot": {
+    "_comment": "Регистрационный бот в настоящем Telegram для релея OTP. Токен в этот файл не попадает — только на сервер.",
+    "username": "RushAuth_Bot",
+    "token": "PLACEHOLDER_BOT_TOKEN"
+  }
+}
