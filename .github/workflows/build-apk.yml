@@ -63,19 +63,19 @@ jobs:
       # по кругу и показывает вечную загрузку. Ровно это и случилось в сборке #5.
       APP_SERVER_HOST: 31.77.156.11
       APP_SERVER_PORT: "2398"
-      # Домен остаётся для HTTP-эндпоинта server-info (там обычный URL, имя
-      # резолвит Java) и для проверок. В APK он не вшивается.
-      SERVER_DOMAIN: 31.77.156.11
+      # Домен вшивается в APK как WEB_DOMAIN (HTTP/веб-ссылки), но НЕ как
+      # MTProto-адрес: нативный слой понимает только числовой IP.
+      SERVER_DOMAIN: rushgramser.xyz
       SERVER_INFO_URL: "http://31.77.156.11:2398/owpengram/server-info"
 
       # Версия. Совпадает с XTree Gram намеренно: это тот же код, и различать
       # сборки по номеру версии смысла нет — их различает applicationId.
-      APP_VERSION_CODE: "7043"
+      APP_VERSION_CODE: "7044"
       APP_VERSION_NAME: "12.10.1"
       APP_PACKAGE: com.rushgram.messenger
       APP_LABEL: RushGram
       # versionCode afat = APP_VERSION_CODE * 10 + 9 (см. TMessagesProj_App/build.gradle).
-      EXPECTED_VERSION_CODE: "70439"
+      EXPECTED_VERSION_CODE: "70449"
 
       # Отпечаток сертификата ключа подписи RushGram. Если APK подписан не им,
       # обновление поверх установленного приложения не встанет — лучше упасть здесь.
@@ -435,6 +435,7 @@ jobs:
           python3 tools/scan_apk.py "$APK_PATH" \
             --present "$APP_SERVER_HOST" \
             --present "$APP_PACKAGE" \
+            --present "$SERVER_DOMAIN" \
             --present "$KEY_BODY" \
             --json "$RUNNER_TEMP/apk-branding-report.json"
 

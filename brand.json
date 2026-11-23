@@ -14,6 +14,12 @@
     "_android_overlay": "Android-конвейер накладывает overlay XTree Gram, поэтому в текстовых ресурсах уже стоит 'Xtreegram' вместо 'Telegram'. Поэтому правил две группы: сначала снимаем следы XTree Gram, потом добираем то, что XTree Gram сам не тронул. В Java применяется только группа XTree Gram — правило 'Telegram' там опасно (идентификаторы, t.me-ссылки, telegram.org).",
     "rules": [
       {
+        "from": "KiteGrams",
+        "to": "RushGram",
+        "skip_after": [],
+        "skip_before": []
+      },
+      {
         "from": "XTree Gram",
         "to": "RushGram",
         "skip_after": [],
@@ -87,14 +93,14 @@
     "source_releases": "https://github.com/owpengram/owpengram-desktop-client/releases",
     "exe_name": "RushGram.exe",
     "server_name": "RushGram",
-    "server_description": "Self-hosted RushGram server.",
+    "server_description": "Self-hosted RushGram server. Web: rushgramser.xyz",
     "server_icon_env": "TELESRV_OWPENGRAM_SERVER_ICON"
   },
   "server": {
-    "_comment": "RushGram: без домена, только IP. MTProto-адрес в клиенте — числовой IP, иначе нативный слой не подключится.",
-    "domain": "31.77.156.11",
-    "base_url": "http://31.77.156.11",
-    "web_base_url": "http://31.77.156.11",
+    "_comment": "RushGram: MTProto-адрес в клиенте — числовой IP (нативный слой не резолвит домены). Домен verwenden для HTTP server-info и веб-ссылок.",
+    "domain": "rushgramser.xyz",
+    "base_url": "https://rushgramser.xyz",
+    "web_base_url": "https://rushgramser.xyz",
     "advertise_ip": "31.77.156.11",
     "public_listen_host": "0.0.0.0",
     "server_port": 2398,

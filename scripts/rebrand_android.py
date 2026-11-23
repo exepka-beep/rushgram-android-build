@@ -89,10 +89,10 @@ except ImportError:  # pragma: no cover - скрипт всегда лежит �
 
 # Правила снятия следов XTree Gram. Именно они применяются к Java; группа
 # Telegram — только к strings.xml, где текст не может быть идентификатором.
-XTREE_SOURCES = ("XTree Gram", "Xtreegram", "XTREEGRAM")
+XTREE_SOURCES = ("KiteGrams", "XTree Gram", "Xtreegram", "XTREEGRAM")
 
 # Файлы, которые надо просмотреть в поисках следов XTree Gram.
-JAVA_MARKERS = ("XTree Gram", "Xtreegram", "XTREEGRAM")
+JAVA_MARKERS = ("KiteGrams", "XTree Gram", "Xtreegram", "XTREEGRAM")
 
 PEM_BEGIN = re.compile(r"^-----BEGIN [A-Z0-9 ]*PUBLIC KEY-----\s*$", re.M)
 PEM_END = re.compile(r"^-----END [A-Z0-9 ]*PUBLIC KEY-----\s*$", re.M)
