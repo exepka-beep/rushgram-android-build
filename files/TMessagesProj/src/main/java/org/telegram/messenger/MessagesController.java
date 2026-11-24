@@ -141,6 +141,12 @@ import me.vkryl.core.BitwiseUtils;
 
 public class MessagesController extends BaseController implements NotificationCenter.NotificationCenterDelegate {
 
+    // RushGram: публичные ссылки (/chat, /nft/<slug>, /+<hash>) всегда строятся
+    // на домене проекта. Не зависит от help.getConfig -> me_url_prefix и от
+    // нативного кеша конфига, который клиент не всегда обновляет при смене
+    // серверного TELESRV_PUBLIC_BASE_URL.
+    public static final String RUSHGRAM_LINK_DOMAIN = "rushgramser.xyz";
+
     public int lastKnownSessionsCount;
     private final ConcurrentHashMap<Long, TLRPC.Chat> chats = new ConcurrentHashMap<>(100, 1.0f, 2);
     private final ConcurrentHashMap<Integer, TLRPC.EncryptedChat> encryptedChats = new ConcurrentHashMap<>(10, 1.0f, 2);
@@ -1590,7 +1596,7 @@ public class MessagesController extends BaseController implements NotificationCe
         maxFaveStickersCount = mainPreferences.getInt("maxFaveStickersCount", 5);
         maxEditTime = mainPreferences.getInt("maxEditTime", 3600);
         ratingDecay = mainPreferences.getInt("ratingDecay", 2419200);
-        linkPrefix = mainPreferences.getString("linkPrefix", "t.me");
+        linkPrefix = RUSHGRAM_LINK_DOMAIN;
         owpengramServer = mainPreferences.getBoolean("owpengramServer", false);
         callReceiveTimeout = mainPreferences.getInt("callReceiveTimeout", 20000);
         callRingTimeout = mainPreferences.getInt("callRingTimeout", 90000);
@@ -5744,6 +5750,8 @@ public class MessagesController extends BaseController implements NotificationCe
             } else if (linkPrefix.startsWith("http://")) {
                 linkPrefix = linkPrefix.substring(7);
             }
+            // RushGram: сервер мог вернуть IP в me_url_prefix — держим домен.
+            linkPrefix = RUSHGRAM_LINK_DOMAIN;
             callReceiveTimeout = config.call_receive_timeout_ms;
             callRingTimeout = config.call_ring_timeout_ms;
             callConnectTimeout = config.call_connect_timeout_ms;
